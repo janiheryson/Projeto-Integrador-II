@@ -19,12 +19,27 @@ module Api
                     render json: {status: 'ERROR', message: 'Profissional Não Salvo', data: doctor}, status: :unprocessable_entity
                 end
             end
-
+            
+            def update
+                doctor = Doctor.find(params[:id])
+                if doctor.update(doctor_params)
+                    render json: {status: 'SUCCESS', message: 'Profissioanl alterado', data: doctor}, status: :ok
+                else
+                    render json: {status: 'ERROR', message: 'Profissional não alterado', data: doctor}, status: :unprocessable_entity
+                end
+            end
+            
+            def destroy
+                doctor = Doctor.find(params[:id])
+                doctor.destroy
+                render json: {status: 'SUCCESS', message: 'Profissioanl apagado', data: doctor}, status: :ok
+            end
+            
             private
-
             def doctor_params
                 params.permit(:fullname, :email, :CRM, :specialty_id)
             end
+            
         end
     end
 end
